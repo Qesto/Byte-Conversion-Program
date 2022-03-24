@@ -52,6 +52,7 @@ void menuOptions() {
 			std::cout << " Enter a Hexadecimal Value:\n";
 			getline(std::cin, stringInput);
 			boost::erase_all(stringInput, " ");
+			boost::to_upper(stringInput);
 			std::cout << "------------------------------------"
 				<< '\n' << std::setw(20) << "Hexadecimal: " << stringInput << '\n';
 			// Hexa --> Binary & Decimal function
@@ -76,28 +77,34 @@ void menuOptions() {
 			ignoreExtraInputs();
 			std::cout << " Enter 2 values - separated by a space - you would like to preform an 'ADD' Operation on:\n"
 				<< " NOTE: Input binary values without any spaces in between!\n"
-				<< "       Also, this only works with Binary & Hexa values!\n";
+				<< "       Specify what base the number is in by adding an 'B' or an 'H' in front of the value (without quotes)\n"
+				<< "       This only works with Binary & Hexa values!\n";
 			std::cin >> FirstArithmeticValue >> SecArithmeticValue;
+			boost::to_upper(FirstArithmeticValue);
+			boost::to_upper(SecArithmeticValue);
 			std::cout << "\n------------------------------------"
 				<< '\n' << std::setw(20) << "Inputed Values: " << FirstArithmeticValue << " and " << SecArithmeticValue << '\n';
 
-			if (!(FirstArithmeticValue.find("0") != std::string::npos || FirstArithmeticValue.find("1") != std::string::npos)) {
-				decimalA = hexaToDecimal(FirstArithmeticValue);
-				if (!(SecArithmeticValue.find("0") != std::string::npos || SecArithmeticValue.find("1") != std::string::npos)) {
-					decimalB = hexaToDecimal(SecArithmeticValue);
+			if (FirstArithmeticValue.at(0) == 'B') {
+				decimalA = binaryToDecimal(FirstArithmeticValue.substr(1, std::string::npos));
+				if (SecArithmeticValue.at(0) == 'B') {
+					decimalB = binaryToDecimal(SecArithmeticValue.substr(1, std::string::npos));
 				}
 				else {
-					decimalB = binaryToDecimal(SecArithmeticValue);
+					decimalB = hexaToDecimal(SecArithmeticValue.substr(1, std::string::npos));
 				}
 			}
-			if (!(SecArithmeticValue.find("0") != std::string::npos || SecArithmeticValue.find("1") != std::string::npos)) {
-				decimalB = hexaToDecimal(SecArithmeticValue);
-				decimalA = binaryToDecimal(FirstArithmeticValue);
+			else if (FirstArithmeticValue.at(0) == 'H') {
+				decimalA = hexaToDecimal(FirstArithmeticValue.substr(1, std::string::npos));
+				if (SecArithmeticValue.at(0) == 'H') {
+					decimalB = hexaToDecimal(SecArithmeticValue.substr(1, std::string::npos));
+				}
+				else {
+					decimalB = binaryToDecimal(SecArithmeticValue.substr(1, std::string::npos));
+				}
 			}
-			if ((FirstArithmeticValue.find("0") != std::string::npos || FirstArithmeticValue.find("1") != std::string::npos) &&
-				(SecArithmeticValue.find("0") != std::string::npos || SecArithmeticValue.find("1") != std::string::npos)) {
-				decimalA = binaryToDecimal(FirstArithmeticValue);
-				decimalB = binaryToDecimal(SecArithmeticValue);
+			else {
+				std::cout << "\nSomething went wrong in the 'Addition' Option\n";
 			}
 			resultantDecimal = decimalA + decimalB;
 			std::cout << '\n' << std::setw(20) << "Decimal: " << resultantDecimal << '\n'
