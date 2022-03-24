@@ -3,6 +3,7 @@
 #include <vector>
 #include <iomanip>
 #include <boost/algorithm/string/erase.hpp>
+#include <boost/algorithm/string/case_conv.hpp>
 
 inline void ignoreExtraInputs() {
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -171,7 +172,7 @@ inline int hexaToDecimal(std::string hexaInput) {
 			hexaToDecimalValue += (indexValue - 55) * hexaHighestExponentValue;
 		}
 		else {
-			std::cout << "\nSomething went wrong in the 'hexaToBinary' function\n";
+			std::cout << "\nSomething went wrong in the 'hexaToDecimal' function\n";
 		}
 		hexaHighestExponentValue = hexaHighestExponentValue / 16;
 	}
